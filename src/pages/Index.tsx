@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import {
   Tabs,
@@ -26,6 +25,7 @@ import DataSummary from "../components/DataSummary";
 import DataTable from "../components/DataTable";
 import ColumnSettings from "../components/ColumnSettings";
 import DownloadOptions from "../components/DownloadOptions";
+import ProcessingOverlay from "../components/ProcessingOverlay";
 
 const Index = () => {
   const [fileName, setFileName] = useState<string>('');
@@ -33,8 +33,16 @@ const Index = () => {
   const [processedDataState, setProcessedDataState] = useState<ProcessedData | null>(null);
   const [activeTab, setActiveTab] = useState<string>('upload');
   const [isProcessed, setIsProcessed] = useState<boolean>(false);
+  const [showProcessing, setShowProcessing] = useState(false);
+  const [processingStep, setProcessingStep] = useState(0);
+  const [processingPercent, setProcessingPercent] = useState(0);
 
-  // Handle file upload
+  const processingSteps = [
+    "Imputing missing values...",
+    "Encoding categorical variables...",
+    "Finishing up..."
+  ];
+
   const handleFileLoaded = (content: string) => {
     try {
       const csvData = parseCSV(content);
@@ -52,7 +60,6 @@ const Index = () => {
     }
   };
 
-  // Calculate missing cells for display in the data table
   const missingCells = useMemo(() => {
     if (!rawData) return [];
     
@@ -73,7 +80,6 @@ const Index = () => {
     return cells;
   }, [rawData]);
 
-  // Handle imputation method change
   const handleImputationChange = (columnName: string, method: ImputationMethod) => {
     if (!processedDataState) return;
     
@@ -91,7 +97,6 @@ const Index = () => {
     });
   };
 
-  // Handle custom value change for imputation
   const handleCustomValueChange = (columnName: string, value: string) => {
     if (!processedDataState) return;
     
@@ -109,7 +114,6 @@ const Index = () => {
     });
   };
 
-  // Handle encoding method change
   const handleEncodingChange = (columnName: string, method: EncodingMethod) => {
     if (!processedDataState) return;
     
@@ -127,23 +131,49 @@ const Index = () => {
     });
   };
 
-  // Process data with selected imputation and encoding methods
-  const handleProcessData = () => {
+  const handleProcessData = async () => {
     if (!processedDataState) return;
-    
+
+    setShowProcessing(true);
+    setProcessingStep(0);
+    setProcessingPercent(0);
+
     try {
+      // 1. Impute Data (Step 0)
+      setProcessingStep(0);
+      setProcessingPercent(0);
+      await new Promise(res => setTimeout(res, 700)); // simulate delay
+
       const imputedData = imputeData(processedDataState);
+      setProcessingPercent(33);
+
+      // 2. Encode Data (Step 1)
+      setProcessingStep(1);
+      await new Promise(res => setTimeout(res, 700)); // simulate delay
+
       const encodedData = encodeData(imputedData);
+      setProcessingPercent(66);
+
+      // 3. Finishing up (Step 2)
+      setProcessingStep(2);
+      await new Promise(res => setTimeout(res, 400)); // simulate delay
+
       setProcessedDataState(encodedData);
+      setProcessingPercent(100);
+      await new Promise(res => setTimeout(res, 300)); // slight pause at 100%
+
       setIsProcessed(true);
       setActiveTab('preview');
       toast.success("Data processed successfully!");
     } catch (error) {
       toast.error(`Error processing data: ${(error as Error).message}`);
+    } finally {
+      setShowProcessing(false);
+      setProcessingStep(0);
+      setProcessingPercent(0);
     }
   };
 
-  // Auto-suggest imputation and encoding methods
   const handleAutoSuggest = () => {
     if (!processedDataState) return;
     
@@ -164,7 +194,6 @@ const Index = () => {
     toast.success("Auto-suggestions applied!");
   };
 
-  // Prepare download data
   const downloadData = useMemo(() => {
     if (!processedDataState || !isProcessed) {
       return {
@@ -312,6 +341,13 @@ const Index = () => {
           )}
         </TabsContent>
       </Tabs>
+      {showProcessing && (
+        <ProcessingOverlay
+          steps={processingSteps}
+          currentStep={processingStep}
+          percent={processingPercent}
+        />
+      )}
     </div>
   );
 };
