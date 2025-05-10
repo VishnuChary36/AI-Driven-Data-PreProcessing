@@ -4,6 +4,10 @@ A web application for data preprocessing tasks, built with React, TypeScript, an
 
 ![Background](./static/bg.png)
 
+## Live Demo
+
+Check out the live demo of the project: [Data-PreProcess Live Demo](https://ai-driven-data-preprocessing.vercel.app/)
+
 ## Features
 
 - Data upload and management
@@ -11,6 +15,8 @@ A web application for data preprocessing tasks, built with React, TypeScript, an
 - Clean outliers
 - Feature scaling
 - Categorical encoding
+
+// ...existing code...
 
 ## Requirements
 
