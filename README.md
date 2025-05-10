@@ -2,6 +2,8 @@
 
 A web application for data preprocessing tasks, built with React, TypeScript, and Vite.
 
+👉 [Try the Live Demo]([https://data-preprocess.vercel.app](https://ai-driven-data-pre-processing-okosstesg-vishnuchary36s-projects.vercel.app/))
+
 ![Background](./static/bg.png)
 
 ## Features
