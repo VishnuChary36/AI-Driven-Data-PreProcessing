@@ -1,4 +1,3 @@
-
 import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Button } from '@/components/ui/button';
@@ -44,8 +43,8 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileLoaded }) => {
   });
 
   return (
-    <div 
-      {...getRootProps()} 
+    <div
+      {...getRootProps()}
       className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
         ${isDragActive ? 'border-data-highlight bg-blue-50' : 'border-gray-300 hover:border-data-highlight'}`}
     >
@@ -62,7 +61,10 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileLoaded }) => {
             </div>
           )}
         </div>
-        <Button variant="default" className="mt-4 bg-data-highlight hover:bg-data-highlight/90">
+        <Button
+          variant="default"
+          className="mt-4 bg-violet-500 hover:bg-violet-800 active:bg-blue-600 transition-colors duration-200"
+        >
           Select File
         </Button>
       </div>

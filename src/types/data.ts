@@ -6,6 +6,8 @@ export type ImputationMethod = 'mean' | 'median' | 'mode' | 'custom' | 'none';
 export type EncodingMethod = 'label' | 'one-hot' | 'none';
 
 export interface ColumnStats {
+  data: any;
+  skewness: number;
   name: string;
   dataType: DataType;
   missingCount: number;

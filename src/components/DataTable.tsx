@@ -14,7 +14,7 @@ import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface DataTableProps {
   headers: string[];
-  data: any[][];
+  data: unknown[][];
   missingCells?: { row: number; col: number }[];
   previewMode?: boolean;
 }

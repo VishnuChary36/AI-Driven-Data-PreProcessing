@@ -1,73 +1,93 @@
-# Welcome to your Lovable project
+# Data-PreProcess
 
-## Project info
+A web application for data preprocessing tasks, built with React, TypeScript, and Vite.
 
-**URL**: https://lovable.dev/projects/3c1562f7-4681-42e3-b1da-b7c65bfa6342
+![Background](./static/bg.png)
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- Data upload and management
+- Handle missing values
+- Clean outliers
+- Feature scaling
+- Categorical encoding
 
-**Use Lovable**
+## Requirements
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/3c1562f7-4681-42e3-b1da-b7c65bfa6342) and start prompting.
+Before running this project, make sure you have the following installed:
 
-Changes made via Lovable will be committed automatically to this repo.
+- [Node.js](https://nodejs.org/) (v16 or higher)
+- [Bun](https://bun.sh/) as an alternative to npm (optional but recommended)
 
-**Use your preferred IDE**
+## Installation
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+1. Clone the repository:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+   ```bash
+   git clone <repository-url>
+   cd Data-PreProcess
+   ```
 
-Follow these steps:
+2. Install dependencies:
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+   ```bash
+   # Using npm
+   npm install
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+   # OR using Bun
+   bun install
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+## Running the Application
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+To start the development server:
+
+```bash
+# Using npm
 npm run dev
+
+# OR using Bun
+bun run dev
 ```
 
-**Edit a file directly in GitHub**
+Navigate to `http://localhost:5173` in your browser to view the application.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Building for Production
 
-**Use GitHub Codespaces**
+To build the application for production:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```bash
+# Using npm
+npm run build
 
-## What technologies are used for this project?
+# OR using Bun
+bun run build
+```
 
-This project is built with:
+The build artifacts will be stored in the `dist/` directory.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Project Structure
 
-## How can I deploy this project?
+- `src/` - Source code
+  - `components/` - Reusable UI components
+  - `hooks/` - Custom React hooks
+  - `lib/` - Utility libraries
+  - `pages/` - Page components
+  - `types/` - TypeScript type definitions
+  - `utils/` - Helper functions
+- `public/` - Static assets that will be served directly
+- `static/` - Static assets for the application
 
-Simply open [Lovable](https://lovable.dev/projects/3c1562f7-4681-42e3-b1da-b7c65bfa6342) and click on Share -> Publish.
+## Technologies Used
 
-## Can I connect a custom domain to my Lovable project?
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/)
+- [TanStack Query](https://tanstack.com/query/latest) (formerly React Query)
+- [React Router](https://reactrouter.com/)
+- [Tailwind CSS](https://tailwindcss.com/)
 
-Yes, you can!
+## License
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+[MIT](LICENSE)
+S

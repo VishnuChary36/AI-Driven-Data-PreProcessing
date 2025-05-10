@@ -215,8 +215,8 @@ const Index = () => {
   return (
     <div className="container max-w-7xl mx-auto px-4 py-8">
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-900">Data Whisperer</h1>
-        <p className="text-lg text-gray-600 mt-2">Handle missing data and encode categorical features with ease</p>
+        <h1 className="text-4xl font-bold text-gray-900">Data Preprocessing Tool</h1>
+        <p className="text-lg text-gray-600 mt-2">Transform your raw data into analysis-ready datasets with our powerful preprocessing tool</p>
       </div>
       
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">

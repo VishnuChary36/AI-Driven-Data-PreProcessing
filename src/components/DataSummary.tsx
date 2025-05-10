@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { ColumnStats } from '@/types/data';
@@ -13,7 +12,22 @@ const DataSummary: React.FC<DataSummaryProps> = ({ columnStats, dataRows }) => {
   const totalMissingValues = columnStats.reduce((sum, col) => sum + col.missingCount, 0);
   const columnsWithMissing = columnStats.filter(col => col.missingCount > 0);
   const categoricalColumns = columnStats.filter(col => col.dataType === 'categorical');
+  const numericColumns = columnStats.filter(col => col.dataType === 'numeric');
   const missingPercentage = ((totalMissingValues / (dataRows * columnStats.length)) * 100).toFixed(2);
+
+  // Detect outliers using IQR
+  const detectOutliers = (col: ColumnStats) => {
+    if (!col.data || col.dataType !== 'numeric') return 0;
+    const sorted = [...col.data].sort((a, b) => a - b);
+    const Q1 = sorted[Math.floor(sorted.length * 0.25)];
+    const Q3 = sorted[Math.floor(sorted.length * 0.75)];
+    const IQR = Q3 - Q1;
+    const lowerBound = Q1 - 1.5 * IQR;
+    const upperBound = Q3 + 1.5 * IQR;
+    return col.data.filter(value => value < lowerBound || value > upperBound).length;
+  };
+
+  const outlierColumns = numericColumns.filter(col => detectOutliers(col) > 0);
 
   return (
     <div className="space-y-4">
@@ -49,6 +63,25 @@ const DataSummary: React.FC<DataSummaryProps> = ({ columnStats, dataRows }) => {
           <AlertTitle>No Missing Data</AlertTitle>
           <AlertDescription>
             Your dataset doesn't have any missing values.
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {outlierColumns.length === 0 ? (
+        <Alert variant="default" className="bg-green-50 text-green-800 border-green-200">
+          <CheckCircle2 className="h-4 w-4" />
+          <AlertTitle>No Outliers Detected</AlertTitle>
+          <AlertDescription>
+            No outliers were detected in the numeric columns.
+          </AlertDescription>
+        </Alert>
+      ) : (
+        <Alert variant="destructive" className="bg-red-50 text-red-800 border-red-200">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Outliers Detected</AlertTitle>
+          <AlertDescription>
+            {outlierColumns.length} column{outlierColumns.length !== 1 ? 's' : ''} contain{outlierColumns.length === 1 ? 's' : ''} outliers. 
+            Consider handling them before proceeding.
           </AlertDescription>
         </Alert>
       )}

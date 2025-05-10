@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   Card, 
@@ -45,7 +44,28 @@ const ColumnSettings: React.FC<ColumnSettingsProps> = ({
     default:
       dataTypeBadge = <Badge className="bg-gray-500">Unknown</Badge>;
   }
-  
+
+  // Suggest encoding method based on skewness
+  const suggestEncodingMethod = () => {
+    if (column.dataType === 'numeric') {
+      const skewness = column.skewness || 0; // Assume skewness is provided in ColumnStats
+      return Math.abs(skewness) < 0.5 ? 'Min-Max Scaling' : 'Standardization';
+    }
+    return 'None';
+  };
+
+  // Suggest imputation method based on data type and missing values
+  const suggestImputationMethod = () => {
+    if (column.dataType === 'numeric') {
+      if (column.missingCount > 0) {
+        return column.missingCount > 10 ? 'Mean' : 'Median';
+      }
+    } else if (column.dataType === 'categorical') {
+      return column.mode ? `Mode (${column.mode})` : 'None';
+    }
+    return 'None';
+  };
+
   return (
     <Card className="w-full">
       <CardHeader>
@@ -68,7 +88,7 @@ const ColumnSettings: React.FC<ColumnSettingsProps> = ({
           <div className="space-y-4">
             <div>
               <label htmlFor={`imputation-${column.name}`} className="block text-sm font-medium text-gray-700 mb-1">
-                Imputation Method
+                Imputation Method (Suggested: {suggestImputationMethod()})
               </label>
               <Select 
                 value={column.selectedImputation} 
@@ -81,12 +101,12 @@ const ColumnSettings: React.FC<ColumnSettingsProps> = ({
                   <SelectItem value="none">None (keep missing)</SelectItem>
                   {column.dataType === 'numeric' && (
                     <>
-                      <SelectItem value="mean">Mean ({column.mean?.toFixed(2)})</SelectItem>
-                      <SelectItem value="median">Median ({column.median?.toFixed(2)})</SelectItem>
+                      <SelectItem value="mean">Mean ({column.mean?.toFixed(2) || 'N/A'})</SelectItem>
+                      <SelectItem value="median">Median ({column.median?.toFixed(2) || 'N/A'})</SelectItem>
                     </>
                   )}
                   {column.dataType === 'categorical' && (
-                    <SelectItem value="mode">Mode ({column.mode})</SelectItem>
+                    <SelectItem value="mode">Mode ({column.mode || 'N/A'})</SelectItem>
                   )}
                   <SelectItem value="custom">Custom Value</SelectItem>
                 </SelectContent>
@@ -122,10 +142,31 @@ const ColumnSettings: React.FC<ColumnSettingsProps> = ({
                 <SelectValue placeholder="Select encoding" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="none">None (keep original)</SelectItem>
+                <SelectItem value="none">None</SelectItem>
                 <SelectItem value="label">Label Encoding</SelectItem>
                 {/* One-hot encoding would be added in a future version */}
                 {/* <SelectItem value="one-hot">One-Hot Encoding</SelectItem> */}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
+
+        {column.dataType === 'numeric' && (
+          <div className="mt-4">
+            <label htmlFor={`encoding-${column.name}`} className="block text-sm font-medium text-gray-700 mb-1">
+              Encoding Method (Suggested: {suggestEncodingMethod()})
+            </label>
+            <Select 
+              value={column.selectedEncoding} 
+              onValueChange={(value) => onEncodingChange(column.name, value as EncodingMethod)}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select encoding" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">None</SelectItem>
+                <SelectItem value="min-max">Min-Max Scaling</SelectItem>
+                <SelectItem value="standardization">Standardization</SelectItem>
               </SelectContent>
             </Select>
           </div>
