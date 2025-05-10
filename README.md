@@ -4,10 +4,6 @@ A web application for data preprocessing tasks, built with React, TypeScript, an
 
 ![Background](./static/bg.png)
 
-## Live Demo
-
-Check out the live demo of the project: [Data-PreProcess Live Demo](https://vishnuchary36.github.io/AI-Driven-Data-PreProcessing/)
-
 ## Features
 
 - Data upload and management
